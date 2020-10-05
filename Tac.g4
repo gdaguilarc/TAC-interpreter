@@ -28,11 +28,11 @@ assign      : ID '=' value            # Set
             | ID '=' value '||' value # Or
             ;
 
-go        : 'goto' ID;
+go          : 'goto' ID;
 
-iffalse     : 'ifFalse' ID 'goto' ID;
+iffalse     : 'ifFalse' ID go;
 
-iftrue      : 'ifTrue' ID 'goto' ID;
+iftrue      : 'ifTrue' ID go;
 
 array       : ID '[' value ']' '=' value    # ArrVar
             | ID '=' ID '[' value ']'       # VarArr

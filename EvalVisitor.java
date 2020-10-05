@@ -7,17 +7,8 @@ import java.util.Set;
 import java.util.ArrayList;
 
 public class EvalVisitor extends TacBaseVisitor<Integer> {
-    Map<String, Integer> memory = new HashMap<String, Integer>();
-    public static Map<String, ArrayList<ParseTree>> label = 
-        new HashMap<String, ArrayList<ParseTree>>();
-    int mark = 1;
-
-    @Override
-    public Integer visitLabel(TacParser.LabelContext ctx) {
-        //String label = ctx.ID().getText();
-        // Every label is registered in Main
-        return 0; // dummy return
-    }
+    public static Map<String, Integer> memory = new HashMap<String, Integer>();
+    public static Map<String, Integer> label = new HashMap<String, Integer>();
 
     @Override
     public Integer visitId(TacParser.IdContext ctx) {
@@ -130,15 +121,31 @@ public class EvalVisitor extends TacBaseVisitor<Integer> {
 
     @Override
     public Integer visitGo(TacParser.GoContext ctx) {
-        if (mark != 0) {
-            mark = 0;
-            ArrayList<ParseTree> tmp = label.get(ctx.ID().getText());
-            for (ParseTree pt: tmp) {
-                visit(pt);
-            }
-        }
+        int ip  = label.get(ctx.ID().getText());
+        Main.updateVisit(ip);
 
-        return 0;
+        return 0; // Dummy return
+    }
+
+    @Override
+    public Integer visitIffalse(TacParser.IffalseContext ctx) {
+        String id = ctx.ID().getText();
+        int val = memory.get(id);
+        if (val == 0) {
+            visit(ctx.go());
+        }
+        return 0; // Dummy return
+    }
+
+    @Override
+    public Integer visitIftrue(TacParser.IftrueContext ctx) {
+        String id = ctx.ID().getText();
+        int val = memory.get(id);
+
+        if (val != 0) {
+            visit(ctx.go());
+        }
+        return 0; // Dummy return
     }
 
     @Override
