@@ -1,0 +1,7 @@
+*.class
+TacL*
+TacB*.java
+Tac.i*
+Tac.to*
+TacParser.java
+TacVisitor.java
