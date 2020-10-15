@@ -152,7 +152,7 @@ public class EvalVisitor extends TacBaseVisitor<Integer> {
     public Integer visitArrVar(TacParser.ArrVarContext ctx) {
         String base = ctx.ID().getText();
         int offset = visit(ctx.value(0));
-        String id = base + String.valueOf(offset);   
+        String id = base + "[" + String.valueOf(offset) + "]";
         int value = visit(ctx.value(1));
 
         memory.put(id, value);
@@ -164,7 +164,7 @@ public class EvalVisitor extends TacBaseVisitor<Integer> {
         String id = ctx.ID(0).getText();
         String base = ctx.ID(1).getText();
         int offset = visit(ctx.value());
-        String arrkey = base + String.valueOf(offset);   
+        String arrkey = base + "[" + String.valueOf(offset) + "]";
         int value;
         
         if (memory.containsKey(arrkey)) {
